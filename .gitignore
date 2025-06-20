@@ -49,3 +49,4 @@ swarm-runs
 
 # Docker environment file
 docker/.env
+.claude-flow-history
