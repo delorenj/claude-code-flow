@@ -46,3 +46,6 @@ test-init
 test-full-init
 
 swarm-runs
+
+# Docker environment file
+docker/.env

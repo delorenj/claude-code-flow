@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  claude_flow:
+    build:
+      context: . # Sets the build context to the project root directory
+      dockerfile: ./docker/Dockerfile # Specifies the Dockerfile location relative to the project root
+    container_name: claude_flow_app
+    # The command to start the application.
+    # Assumes cli.js is in the root of the source code copied to /app in the container.
+    # From package.json: "main": "cli.js", "bin": { "claude-flow": "./cli.js" }
+    # Dockerfile copies source and runs `npm ci`, but doesn't globally install the package.
+    # So, we directly invoke cli.js with node.
+    command: node ./cli.js start
+    ports:
+      # Maps host port (from .env or default 3000) to container port 3000 for the main server.
+      - "${MAIN_SERVER_PORT:-3000}:3000"
+      # Maps host port (from .env or default 3001) to container port 3001 for the MCP server.
+      - "${MCP_SERVER_PORT:-3001}:3001"
+    env_file:
+      # Specifies the path to the .env file, relative to the project root
+      # when running `docker-compose -f docker/docker-compose.yml up` from project root.
+      - ./docker/.env
+    volumes:
+      # Mounts the project root directory on the host to /app in the container.
+      # This is useful for development as changes to local code are reflected in the container.
+      - ./:/app
+      # Uses a named volume for node_modules.
+      # This prevents the node_modules directory on the host (if any) from overwriting
+      # the node_modules directory installed in the container during the Docker build.
+      # It also helps persist dependencies and can speed up container startup if dependencies don't change.
+      - claude_flow_node_modules:/app/node_modules
+    restart: unless-stopped
+    # The USER directive in the Dockerfile should ensure the container runs as the non-root user.
+    # Specifying 'user' here is generally not needed if Dockerfile is set up correctly.
+    # user: "nodeuser" # or "1001:1001"
+
+volumes:
+  # Defines the named volume used for persisting node_modules.
+  claude_flow_node_modules:
+
+networks:
+  default:
+    driver: bridge # Explicitly define bridge network, though it's default
+    name: claude_flow_network # Custom name for the network
