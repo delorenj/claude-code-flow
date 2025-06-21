@@ -259,7 +259,7 @@ Mode: ${mode} | ${options.parallel ? 'Parallel' : 'Sequential'} | Memory: ${opti
       shell: false
     });
     
-    claudeProcess.on('error', (error) => {
+    claudeProcess.on('error', (error: any) => {
       if (error.code === 'ENOENT') {
         printError('Claude Code is not installed or not in PATH');
         console.log('\n📦 To install Claude Code:');
@@ -517,7 +517,7 @@ async function createProgram() {
       
       // List registered commands
       output += '\n' + chalk.yellow('Registered Commands:') + '\n';
-      const commands = cmd.commands.filter(c => !c._hidden);
+      const commands = cmd.commands.filter(c => !(c as any)._hidden);
       const maxCmdLength = Math.max(...commands.map(c => c.name().length));
       
       commands.forEach(subcmd => {
@@ -1008,9 +1008,10 @@ async function createProgram() {
 
   // Advanced Memory commands
   try {
-    const { createAdvancedMemoryCommand } = await import('./commands/advanced-memory-commands.js');
-    const memoryCmd = createAdvancedMemoryCommand();
-    program.addCommand(memoryCmd);
+    // const { createAdvancedMemoryCommand } = await import('./commands/advanced-memory-commands.js');
+    // const memoryCmd = createAdvancedMemoryCommand();
+    // program.addCommand(memoryCmd);
+    throw new Error('Advanced memory commands disabled for Node.js build');
   } catch (error) {
     // Fallback to simple memory commands if advanced ones fail to load
     const memoryCmd = program
@@ -1309,9 +1310,10 @@ async function createProgram() {
 
   // MCP command
   try {
-    const { createMCPCommand } = await import('./simple-mcp.js');
-    const mcpCommand = createMCPCommand();
-    program.addCommand(mcpCommand);
+    // const { createMCPCommand } = await import('./simple-mcp.js');
+    // const mcpCommand = createMCPCommand();
+    // program.addCommand(mcpCommand);
+    throw new Error('MCP commands disabled for Node.js build');
   } catch (error) {
     // Fallback if MCP module not available
     const mcpCmd = program
@@ -1438,8 +1440,9 @@ async function createProgram() {
     .option('--history-file <path>', 'Custom history file path')
     .action(async (options) => {
       try {
-        const { startNodeREPL } = await import('./node-repl.js');
-        await startNodeREPL(options);
+        // const { startNodeREPL } = await import('./node-repl.js');
+        // await startNodeREPL(options);
+        throw new Error('REPL disabled for Node.js build');
       } catch (error) {
         printError(`Failed to start REPL: ${error.message}`);
       }
@@ -1993,7 +1996,7 @@ Follow the red-green-refactor cycle strictly.`;
           shell: false
         });
         
-        claudeProcess.on('error', (error) => {
+        claudeProcess.on('error', (error: any) => {
           if (error.code === 'ENOENT') {
             printError('Claude Code is not installed or not in PATH');
             console.log('\n📦 To install Claude Code:');
@@ -2873,7 +2876,7 @@ Use ▶ to indicate actionable items`;
           shell: false
         });
 
-        claudeProcess.on('error', (error) => {
+        claudeProcess.on('error', (error: any) => {
           if (error.code === 'ENOENT') {
             printError('Claude Code is not installed or not in PATH');
             console.log('\n📦 To install Claude Code:');

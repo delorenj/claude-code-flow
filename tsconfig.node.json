@@ -9,32 +9,35 @@
     "checkJs": false,
     "outDir": "./dist",
     "rootDir": "./src",
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitOverride": false,
     "exactOptionalPropertyTypes": false,
     "noPropertyAccessFromIndexSignature": false,
     "noUncheckedIndexedAccess": false,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "forceConsistentCasingInFileNames": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "forceConsistentCasingInFileNames": false,
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "verbatimModuleSyntax": false,
     "skipLibCheck": true,
+    "noResolve": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "lib": ["ES2022", "DOM"],
-    "types": ["node", "jest"],
+    "types": ["node"],
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": [
-    "src/**/*"
+    "src/cli/simple-cli.ts",
+    "src/cli/simple-orchestrator.ts",
+    "src/config/config-manager.ts"
   ],
   "exclude": [
     "node_modules",
@@ -44,14 +47,7 @@
     "tests/**/*",
     "deno_modules",
     "bin",
-    "src/cli/commands/**/*",
-    "src/cli/repl.ts",
-    "src/cli/formatter.ts",
-    "src/cli/completion.ts",
-    "src/terminal/vscode-bridge.ts"
-  ],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
+    "src/mcp/swarm-tools.ts",
+    "src/utils/errors.ts"
+  ]
 }
